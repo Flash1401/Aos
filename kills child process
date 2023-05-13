@@ -1,0 +1,69 @@
+Write a C program which creates a child process to run linux/ unix command or any user defined 
+
+program. The parent process set the signal handler for death of child signal and Alarm signal. If a 
+
+child process does not complete its execution in 5 second then parent process kills child process.
+
+#include<stdio.h>
+
+#include<unistd.h>
+
+#include<sys/wait.h>
+
+#include<signal.h>
+
+pid_t pid;
+
+static void sig_handler(int signo)
+
+{
+
+// if(signo==SIG_ERR)
+
+// printf("\n sig err");
+
+if(signo == SIGCHLD)
+
+printf("\nchild signal");
+
+if(signo == SIGALRM)
+
+{
+
+printf("\n alarm signal");
+
+kill(pid,SIGKILL);
+
+}
+
+}
+
+int main()
+
+{
+
+signal(SIGCHLD,sig_handler);
+
+signal(SIGALRM,sig_handler);
+
+if((pid=fork())<0)
+
+printf("\nfork error");
+
+if(pid==0)
+
+{
+
+// sleep(5);
+
+execlp("ls","ls","-l",NULL);
+
+}
+
+alarm(5);
+
+wait(NULL);
+
+return 0;
+
+}
