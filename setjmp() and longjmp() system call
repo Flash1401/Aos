@@ -1,3 +1,6 @@
+Write a C program to demonstrates the different behavior that can be seen with automatic, 
+
+global, register, static and volatile variables (Use setjmp() and longjmp() system call).
 #include<setjmp.h>
 
 #include<stdio.h>
